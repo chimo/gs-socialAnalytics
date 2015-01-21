@@ -1,0 +1,192 @@
+@charset "UTF-8";
+#social {
+  /* Notices */
+  /* Summary */
+  /* Data tables */
+  /* jQueryUI dialog */
+  /* Date picker container */
+  /* Bottom datepicker container */
+  /* Date Navitation */
+  /* Map */
+  /* JS enabled */
+  /* Line Graph */ }
+  #social * {
+    box-sizing: border-box; }
+  #social #content_wrapper {
+    border-right: 0; }
+  #social .sa-map-wrap,
+  #social #aside_primary,
+  #social .input_forms,
+  #social .sa-hide {
+    display: none; }
+  #social #aside_primary_wrapper {
+    background-color: transparent; }
+  #social .notice .entry-title {
+    margin: 2px 7px 0 59px;
+    min-height: 35px; }
+  #social .notice .author .photo {
+    display: inline;
+    float: none;
+    left: 0;
+    margin-right: 11px;
+    position: absolute;
+    top: 7px; }
+  #social .sa-summary {
+    clear: both;
+    margin-bottom: 12px;
+    overflow: hidden; }
+    #social .sa-summary p,
+    #social .sa-summary ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0; }
+    #social .sa-summary li {
+      background: no-repeat 5px 5px;
+      float: left;
+      min-height: 31px;
+      padding: 5px 5px 24px 50px;
+      width: 50%; }
+    #social .sa-summary .sa-posts {
+      background-image: url("../images/comment.png"); }
+    #social .sa-summary .sa-replies {
+      background-image: url("../images/quote.png"); }
+    #social .sa-summary .sa-favs {
+      background-image: url("../images/heart.png"); }
+    #social .sa-summary .sa-bookmarks {
+      background-image: url("../images/book.png"); }
+    #social .sa-summary .sa-follow {
+      background-image: url("../images/user.png"); }
+  #social .sa-table {
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%; }
+    #social .sa-table caption {
+      display: none; }
+    #social .sa-table tr:hover {
+      background-color: #f5f5f5; }
+    #social .sa-table thead th,
+    #social .sa-table thead td {
+      border-bottom: 2px solid #ddd; }
+    #social .sa-table tbody th,
+    #social .sa-table tbody td {
+      border-top: 1px solid #ddd; }
+    #social .sa-table th,
+    #social .sa-table td {
+      padding: 8px; }
+    #social .sa-table td ul {
+      display: none; }
+    #social .sa-table td a {
+      font-weight: bold; }
+  #social .sa-legend {
+    list-style-type: none; }
+    #social .sa-legend li {
+      display: inline;
+      margin-right: 10px; }
+    #social .sa-legend span {
+      bottom: 1px;
+      position: relative; }
+  #social .ui-dialog ul {
+    list-style-type: none;
+    text-align: left; }
+    #social .ui-dialog ul li {
+      border-bottom: 1px solid #ccc;
+      padding: 3px 0; }
+  #social .sa-processing {
+    background: url("../images/icon_processing.gif") no-repeat center center;
+    height: 16px;
+    width: 100%; }
+  #social .sa-picker {
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    display: block;
+    left: 0;
+    margin-top: 5px;
+    padding: 10px;
+    position: static;
+    text-align: left;
+    top: 100%;
+    z-index: 999; }
+    #social .sa-picker label {
+      display: block; }
+  #social .sa-nav-b .sa-picker {
+    bottom: 100%;
+    top: auto; }
+  #social #sa-date-s,
+  #social #sa-date-e {
+    margin-bottom: 5px; }
+  #social #sa-submit {
+    display: block;
+    margin: 5px auto 0; }
+  #social .ui-datepicker-trigger {
+    margin-left: 5px; }
+  #social .sa-nav {
+    height: 22px;
+    list-style-type: none;
+    margin-bottom: 5px;
+    padding: 0; }
+    #social .sa-nav .sa-prev {
+      float: left;
+      width: 33%; }
+    #social .sa-nav .sa-prev:before {
+      content: "⇦"; }
+    #social .sa-nav .sa-cust {
+      float: left;
+      position: relative;
+      text-align: center;
+      width: 33%; }
+      #social .sa-nav .sa-cust a {
+        background: none; }
+    #social .sa-nav .sa-next {
+      float: right;
+      text-align: right;
+      width: 33%; }
+    #social .sa-nav .sa-next:after {
+      content: "⇨"; }
+  #social #sa-map {
+    height: 300px;
+    margin: 0 30px 12px !important;
+    width: 700px; }
+  #social div.olControlAttribution {
+    bottom: 0; }
+  #social .sa-js .sa-map-wrap {
+    display: block; }
+  #social .sa-js .sa-picker {
+    display: none;
+    position: absolute; }
+  #social .tooltip {
+    background: #f4c63d;
+    color: #000;
+    display: inline-block;
+    font-weight: 700;
+    min-width: 5em;
+    padding: 0.5em;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    z-index: 1; }
+    #social .tooltip:after {
+      border: 15px solid transparent;
+      border-top-color: #f4c63d;
+      content: "";
+      height: 0;
+      left: 50%;
+      margin-left: -15px;
+      position: absolute;
+      top: 100%;
+      width: 0; }
+  #social .ct-chart-line .ct-label.ct-horizontal {
+    left: -0.65em;
+    position: relative; }
+  #social .ct-chart-line .ct-series-e {
+    stroke: #6fab59; }
+  #social .ct-chart-pie .ct-series-e .ct-slice {
+    fill: #6fab59; }
+  #social .ct-chart-line .ct-series-f {
+    stroke: #4C9FDD; }
+  #social .ct-chart-pie .ct-series-f .ct-slice {
+    fill: #4C9FDD; }
+  #social .ct-chart-line .ct-series-g {
+    stroke: #9F39AA; }
+  #social .ct-chart-pie .ct-series-g .ct-slice {
+    fill: #9F39AA; }

@@ -1,0 +1,310 @@
+#social {
+    * {
+        box-sizing: border-box;
+    }
+
+    #content_wrapper {
+        border-right: 0;
+    }
+
+    .sa-map-wrap,
+    #aside_primary,
+    .input_forms,
+    .sa-hide {
+        display: none;
+    }
+
+    #aside_primary_wrapper {
+        background-color: transparent;
+    }
+
+    /* Notices */
+    .notice {
+        .entry-title {
+            margin: 2px 7px 0 59px;
+            min-height: 35px;
+        }
+
+        .author .photo {
+            display: inline;
+            float: none;
+            left: 0;
+            margin-right: 11px;
+            position: absolute;
+            top: 7px;
+        }
+    }
+
+    /* Summary */
+    .sa-summary {
+        clear: both;
+        margin-bottom: 12px;
+        overflow: hidden;
+
+        p,
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            background: no-repeat 5px 5px;
+            float: left;
+            min-height: 31px;
+            padding: 5px 5px 24px 50px;
+            width: 50%;
+        }
+
+        .sa-posts {
+            background-image: url("../images/comment.png");
+        }
+
+        .sa-replies {
+            background-image: url("../images/quote.png");
+        }
+
+        .sa-favs {
+            background-image: url("../images/heart.png");
+        }
+
+        .sa-bookmarks {
+            background-image: url("../images/book.png");
+        }
+
+        .sa-follow {
+            background-image: url("../images/user.png");
+        }
+    }
+
+    /* Data tables */
+    .sa-table {
+        border-collapse: collapse;
+        text-align: center;
+        width: 100%;
+
+        caption {
+            display: none;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        thead {
+            th,
+            td {
+                border-bottom: 2px solid #ddd;
+            }
+        }
+
+        tbody {
+            th,
+            td {
+                border-top: 1px solid #ddd;
+            }
+        }
+
+        th,
+        td {
+            padding: 8px;
+        }
+
+        td {
+            ul {
+                display: none;
+            }
+
+            a {
+                font-weight: bold;
+            }
+        }
+    }
+
+    .sa-legend {
+        list-style-type: none;
+
+        li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        span {
+            bottom: 1px;
+            position: relative;
+        }
+    }
+
+    /* jQueryUI dialog */
+    .ui-dialog ul {
+        list-style-type: none;
+        text-align: left;
+
+        li {
+            border-bottom: 1px solid #ccc;
+            padding: 3px 0;
+        }
+    }
+
+    .sa-processing {
+        background: url("../images/icon_processing.gif") no-repeat center center;
+        height: 16px;
+        width: 100%;
+    }
+
+    /* Date picker container */
+    .sa-picker {
+        background-color: #fff;
+        border: 1px solid #000;
+        border-radius: 5px;
+        display: block;
+        left: 0;
+        margin-top: 5px;
+        padding: 10px;
+        position: static;
+        text-align: left;
+        top: 100%;
+        z-index: 999;
+
+        label {
+            display: block;
+        }
+    }
+
+    /* Bottom datepicker container */
+    .sa-nav-b .sa-picker {
+        bottom: 100%;
+        top: auto;
+    }
+
+    #sa-date-s,
+    #sa-date-e {
+        margin-bottom: 5px;
+    }
+
+    #sa-submit {
+        display: block;
+        margin: 5px auto 0;
+    }
+
+    .ui-datepicker-trigger {
+        margin-left: 5px;
+    }
+
+    /* Date Navitation */
+    .sa-nav {
+        height: 22px;
+        list-style-type: none;
+        margin-bottom: 5px;
+        padding: 0;
+
+        .sa-prev {
+            float: left;
+            width: 33%;
+        }
+
+        .sa-prev:before {
+            content: "⇦";
+        }
+
+        .sa-cust {
+            float: left;
+            position: relative;
+            text-align: center;
+            width: 33%;
+
+            a {
+                background: none;
+            }
+        }
+
+        .sa-next {
+            float: right;
+            text-align: right;
+            width: 33%;
+        }
+
+        .sa-next:after {
+            content: "⇨";
+        }
+    }
+
+    /* Map */
+    #sa-map {
+        height: 300px;
+        margin: 0 30px 12px !important;
+        width: 700px;
+    }
+
+    div.olControlAttribution {
+        bottom: 0;
+    }
+
+    /* JS enabled */
+    .sa-js {
+        .sa-map-wrap {
+            display: block;
+        }
+
+        .sa-picker {
+            display: none;
+            position: absolute;
+        }
+    }
+
+    .tooltip {
+        background: #f4c63d;
+        color: #000;
+        display: inline-block;
+        font-weight: 700;
+        min-width: 5em;
+        padding: 0.5em;
+        pointer-events: none;
+        position: absolute;
+        text-align: center;
+        z-index: 1;
+
+        &:after {
+            border: 15px solid transparent;
+            border-top-color: #f4c63d;
+            content: "";
+            height: 0;
+            left: 50%;
+            margin-left: -15px;
+            position: absolute;
+            top: 100%;
+            width: 0;
+        }
+    }
+
+    /* Line Graph */
+    .ct-chart-line .ct-label.ct-horizontal {
+        left: -0.65em;
+        position: relative;
+    }
+
+    .ct-chart-line .ct-series-e {
+        stroke: rgb(111, 171, 89);
+    }
+
+    .ct-chart-pie .ct-series-e .ct-slice {
+        fill: rgb(111, 171, 89);
+    }
+
+    .ct-chart-line .ct-series-f {
+        stroke: #4C9FDD;
+    }
+
+    .ct-chart-pie .ct-series-f .ct-slice {
+        fill: #4C9FDD;
+    }
+
+    .ct-chart-line .ct-series-g {
+        stroke: #9F39AA;
+    }
+
+    .ct-chart-pie .ct-series-g .ct-slice {
+        fill: #9F39AA;
+    }
+}
+
