@@ -232,8 +232,6 @@
     /* Map */
     #sa-map {
         height: 300px;
-        margin: 0 30px 12px !important;
-        width: 700px;
     }
 
     div.olControlAttribution {
@@ -305,6 +303,21 @@
 
     .ct-chart-pie .ct-series-g .ct-slice {
         fill: #9F39AA;
+    }
+
+    #sa-popup {
+        background: #fff;
+
+        .photo {
+            left: 8px;
+            top: auto;
+        }
+
+        .sa-close {
+            position: absolute;
+            right: 3px;
+            top: 3px;
+        }
     }
 }
 

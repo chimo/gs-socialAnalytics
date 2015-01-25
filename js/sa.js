@@ -1,4 +1,4 @@
-/*global jQuery: false, OpenLayers: false, Chartist: false*/
+/*global jQuery: false, ol: false, Chartist: false*/
 (function($, window, OpenLayers, Chartist) {
     "use strict";
 
@@ -6,134 +6,191 @@
 
     var buildCustomDate,
         buildDatePicker,
-        buildMap,
         buildGraphs,
         buildLineGraphLegend,
-//        buildPieGraphLegend,
         buildLineGraphs,
+        buildMap,
         buildPieCharts,
         enhanceTables,
         nativeDatePicker,
         sum,
-        SA = window.SA,
         snRoot = window.location.pathname.replace(/(\/index\.php)?\/social$/, "/");
 
-    /**
-     * Build OpenStreetMap map
-     */
     buildMap = function() {
+        var map,
+            tiles = new ol.layer.Tile({ source: new ol.source.OSM() }),
+            layers = [tiles],
+            createPopup,
+            createStyle,
+            createSourceVector,
+            SA = window.SA,
+            followingCoords,
+            followersCoords;
 
-        // We don't have any map data; bail.
+        // Bail if we don't have any map data.
         if (!SA) {
             return;
         }
 
-        var map = new OpenLayers.Map("sa-map"),
-            bounds = new OpenLayers.Bounds(),
-            lyrMarkers = new OpenLayers.Layer.Markers("Markers"),
-            currentPopup = null,
-            followingCoords = SA.followingCoords,
-            followersCoords = SA.followersCoords,
-            addMarker,
-            addMarkers,
-            newPopup,
-            markerClick;
+        followingCoords = SA.followingCoords;
+        followersCoords = SA.followersCoords;
 
         /**
-         * Creates a popup that will show up when clicking on the marker
+         * Create map marker style
+         *
+         * @param src String URL to image
          */
-        newPopup = function(lonLat, content) {
-            var popup = new OpenLayers.Feature(lyrMarkers, lonLat),
-                popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
-                    "autoSize": true,
-                    "minSize": new OpenLayers.Size(300, 50),
-                    "maxSize": new OpenLayers.Size(500, 300),
-                    "keepInMap": true
+        createStyle = function(src) {
+            return new ol.style.Style(
+                {
+                    image: new ol.style.Icon(
+                        {
+                            anchor: [0.5, 46],
+                            anchorXUnits: "fraction",
+                            anchorYUnits: "pixels",
+                            opacity: 0.75,
+                            src: src
+                         }
+                    )
+                }
+            );
+        };
+
+        /**
+         * Create source vector
+         */
+        createSourceVector = function(items) {
+            var sourceVector = new ol.source.Vector({}),
+                i,
+                len,
+                icon,
+                item;
+
+            for (i = 0, len = items.length; i < len; i += 1) {
+                item = items[i];
+
+                icon = new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.transform([item.lon, item.lat], 'EPSG:4326', 'EPSG:3857')),
+                    profileUrl: item.profileUrl
                 });
 
-            popup.closeBox = true;
-            popup.popupClass = popupClass;
-            popup.data.popupContentHTML = $("a.url[href='" + content + "']").first().closest("li").html();
-            popup.data.overflow = "auto";
+                sourceVector.addFeature(icon);
+            }
 
-            return popup;
+            return sourceVector;
         };
 
         /**
-         * Triggered when clicking on a map marker
+         * Create popup
          */
-        markerClick = function(evt) {
-            var osm = this;
+        createPopup = function(map) {
+            var element = document.getElementById("sa-popup"),
+                popup = new ol.Overlay({
+                    element: element,
+                    positioning: "bottom-center",
+                    stopEvent: false
+                });
 
-            if (currentPopup !== null && currentPopup.visible()) {
-                currentPopup.hide();
-            }
+            map.addOverlay(popup);
 
-            if (osm.popup === null) {
-                osm.popup = osm.createPopup(osm.closeBox);
-                map.addPopup(osm.popup);
-                osm.popup.show();
-            } else {
-                osm.popup.toggle();
-            }
+            // display popup on click
+            map.on("click", function(evt) {
+                var feature,
+                    geometry,
+                    coord,
+                    profileUrl,
+                    html,
+                    $element = $(element);
 
-            currentPopup = osm.popup;
-            OpenLayers.Event.stop(evt);
+                feature = map.forEachFeatureAtPixel(evt.pixel,
+                    function(feature, layer) {
+                        return feature;
+                    });
+
+                if (feature) {
+                    profileUrl = feature.get("profileUrl");
+                    geometry = feature.getGeometry();
+
+                    coord = geometry.getCoordinates();
+                    popup.setPosition(coord);
+
+                    html = $("a.url[href='" + profileUrl + "']")
+                                .first()
+                                .closest("li")
+                                .html();
+
+                    $element
+                        .html("<a href='#' class='sa-close'>x</a>" + html)
+                        .show();
+                } else {
+                    $element.hide();
+                }
+            });
+
+            $(document).on("click", ".sa-close", function(e) {
+                e.preventDefault();
+
+                element.style.display = "none";
+            });
+
+            // Change mouse cursor when over marker
+            $(map.getViewport()).on("mousemove", function(e) {
+                var pixel,
+                    hit,
+                    target;
+
+                target = map.getTarget();
+                pixel = map.getEventPixel(e.originalEvent);
+
+                hit = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+                    return true;
+                });
+
+                if (hit) {
+                    target.style.cursor = "pointer";
+                } else {
+                    target.style.cursor = "";
+                }
+            });
         };
 
-        /**
-         * Adds a marker to the map
-         */
-        addMarker = function(lon, lat, nickname, icon_filename) {
-            var lonLat,
-                size,
-                icon,
-                marker;
-
-            lonLat = new OpenLayers.LonLat(lon, lat)
-                .transform(
-                    new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-                    map.getProjectionObject()               // to Spherical Mercator Projection
-                );
-
-            bounds.extend(lonLat);
-
-            size = new OpenLayers.Size(21, 25);
-            icon = new OpenLayers.Icon("http://www.openlayers.org/dev/img/" + icon_filename,
-                                size,
-                                new OpenLayers.Pixel(-(size.w / 2), -size.h));
-
-            marker = new OpenLayers.Marker(lonLat, icon.clone());
-            marker.events.register("mousedown", newPopup(lonLat, nickname), markerClick);
-            lyrMarkers.addMarker(marker);
-        };
-
-        /**
-         * Calls addMarker() for each item in array
-         */
-        addMarkers = function(arr, icon) {
-            var i,
-                len;
-
-            for (i = 0, len = arr.length; i < len; i += 1) {
-                addMarker(arr[i].lon, arr[i].lat, arr[i].nickname, icon);
-            }
-        };
-
-        map.addLayer(new OpenLayers.Layer.OSM());
-        map.addLayer(lyrMarkers);
-
-        // Add markers for people we started to follow
+        // If we have coords available for new subscriptions,
+        // create map layer with markers
         if (followingCoords) {
-            addMarkers(followingCoords, "marker.png");
+            layers.push(
+                new ol.layer.Vector(
+                    {
+                        source: createSourceVector(followingCoords),
+                        style: createStyle(snRoot + "plugins/SocialAnalytics/images/marker-green.png")
+                    }
+                )
+            );
         }
 
-        // Add markers for people who started to follow us
+        // If we have coords available for new subscribers,
+        // create map layer with markers
         if (followersCoords) {
-            addMarkers(followersCoords, "marker-blue.png");
+            layers.push(
+                new ol.layer.Vector(
+                    {
+                        source: createSourceVector(followersCoords),
+                        style: createStyle(snRoot + "plugins/SocialAnalytics/images/marker-red.png")
+                    }
+                )
+            );
         }
 
-        map.setCenter(bounds.getCenterLonLat(), map.getZoomForExtent(bounds) - 1);
+        // Create map
+        map  = new ol.Map({
+            target: document.getElementById("sa-map"),
+            layers: layers,
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 1
+            })
+        });
+
+        createPopup(map);
     };
 
     /**
@@ -143,7 +200,9 @@
      */
     nativeDatePicker = (function() {
         var i = document.createElement("input");
+
         i.setAttribute("type", "date");
+
         return i.type !== "text";
     }());
 
@@ -209,7 +268,6 @@
         // Necessary since the "create" event can be triggered more than once
         // TODO: try unbinding the event while in here.
         if ($svg.parent().find(".sa-legend").length > 0) {
-            window.console.log($svg.parent());
             return;
         }
 
@@ -494,4 +552,4 @@
     buildMap();
     enhanceTables();
 
-}(jQuery, window, OpenLayers, Chartist));
+}(jQuery, window, ol, Chartist));

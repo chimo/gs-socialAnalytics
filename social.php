@@ -367,9 +367,12 @@ class SocialAction extends Action
             // Wrapper
             $this->elementStart('div', array('class' => 'sa-map-wrap'));
 
+            // Popup
+            $this->element('div', array('id' => 'sa-popup', 'class' => 'notice'));
+
             // Print Map title
             $this->element('h3', null, 'Location of new subscriptions');
-            $this->element('p', null, 'Red: you started following, blue: started to follow you');
+            $this->element('p', null, 'Green: you started following, red: started to follow you');
 
             // Map container
             $this->element('div', array('id' => 'sa-map'));
@@ -377,11 +380,11 @@ class SocialAction extends Action
             // JS variables (used by js/sa.js)
             $js = 'var SA = {};';
             if (isset($this->sa->map['following'])) {
-                $js .= 'SA.followingCoords = [' . implode(',', $this->sa->map['following']) . ']';
+                $js .= 'SA.followingCoords = [' . implode(',', $this->sa->map['following']) . '];';
             }
 
             if (isset($this->sa->map['followers'])) {
-                $js .= 'SA.followersCoords = [' . implode(',', $this->sa->map['followers']) . ']';
+                $js .= 'SA.followersCoords = [' . implode(',', $this->sa->map['followers']) . '];';
             }
 
             if ($js !== '') {

@@ -238,7 +238,7 @@ class Social_analytics extends Memcached_DataObject
                 $sa->graphs['trends'][$date_created->format('Y-m-d')]['following'][] = $profile;
 
                 if(isset($profile->lat) && isset($profile->lon)) {
-                    $sa->map['following'][$profile->nickname] = '{ lon: "' . $profile->lon . '", lat: "'  . $profile->lat . '", nickname: "' . $profile->profileurl . '"}';
+                    $sa->map['following'][$profile->nickname] = '{ lon: ' . $profile->lon . ', lat: '  . $profile->lat . ', profileUrl: "' . $profile->profileurl . '"}';
                 }
 
                 $hst = parse_url($profile->profileurl, PHP_URL_HOST);
@@ -268,7 +268,7 @@ class Social_analytics extends Memcached_DataObject
                 $sa->graphs['trends'][$date_created->format('Y-m-d')]['followers'][] = $profile;
 
                 if(isset($profile->lat) && isset($profile->lon)) {
-                    $sa->map['followers'][$profile->nickname] = '{ lon: "' . $profile->lon . '", lat: "'  . $profile->lat . '", nickname: "' . $profile->profileurl . '"}';
+                    $sa->map['followers'][$profile->nickname] = '{ lon: ' . $profile->lon . ', lat: '  . $profile->lat . ', profileUrl: "' . $profile->profileurl . '"}';
                 }
 
                 $hst = parse_url($profile->profileurl, PHP_URL_HOST);

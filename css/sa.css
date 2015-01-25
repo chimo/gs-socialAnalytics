@@ -144,9 +144,7 @@
     #social .sa-nav .sa-next:after {
       content: "⇨"; }
   #social #sa-map {
-    height: 300px;
-    margin: 0 30px 12px !important;
-    width: 700px; }
+    height: 300px; }
   #social div.olControlAttribution {
     bottom: 0; }
   #social .sa-js .sa-map-wrap {
@@ -190,3 +188,12 @@
     stroke: #9F39AA; }
   #social .ct-chart-pie .ct-series-g .ct-slice {
     fill: #9F39AA; }
+  #social #sa-popup {
+    background: #fff; }
+    #social #sa-popup .photo {
+      left: 8px;
+      top: auto; }
+    #social #sa-popup .sa-close {
+      position: absolute;
+      right: 3px;
+      top: 3px; }
