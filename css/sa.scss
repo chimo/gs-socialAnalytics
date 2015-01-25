@@ -319,5 +319,16 @@
             top: 3px;
         }
     }
+
+    .sa-map-legend {
+        list-style-type: none;
+        margin: 10px 0 0 0;
+        padding: 0;
+
+        li {
+            display: inline;
+            margin-right: 10px;
+        }
+    }
 }
 

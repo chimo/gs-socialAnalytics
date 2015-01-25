@@ -373,11 +373,27 @@ class SocialAction extends Action
             $this->element('div', array('id' => 'sa-popup', 'class' => 'notice'));
 
             // Print Map title
-            $this->element('h3', null, 'Location of new subscriptions');
-            $this->element('p', null, 'Green: you started following, red: started to follow you');
+            $this->element('h3', null, 'Location of new subscribers and subscriptions');
 
             // Map container
             $this->element('div', array('id' => 'sa-map'));
+
+            // Legend
+            $this->elementStart('ul', array('class' => 'sa-map-legend'));
+
+            // Subscriber
+            $this->elementStart('li', array('class' => 'sa-subscriber'));
+            $this->element('img', array('src' => common_local_url('social') . '/../plugins/SocialAnalytics/images/marker-red.png', 'alt' => 'red marker'));
+            $this->text('Subscriber');
+            $this->elementEnd('li');
+
+            // Subscription
+            $this->elementStart('li', array('class' => 'sa-subscription'));
+            $this->element('img', array('src' => common_local_url('social') . '/../plugins/SocialAnalytics/images/marker-green.png', 'alt' => 'green marker'));
+            $this->text('Subscription');
+            $this->elementEnd('li');
+
+            $this->elementEnd('ul');
 
             // JS variables (used by js/sa.js)
             $js = 'var SA = {};';
