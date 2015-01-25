@@ -265,7 +265,9 @@ class SocialAction extends Action
                                 $this->elementStart('a', array('class' => 'url', 'title' => $follower->nickname, 'href' => $follower->profileurl));
 
                                 if (isset($avatar)) {
-                                    $this->element('img', array('width' => '48', 'height' => '48', 'alt' => $follower->nickname, 'class' => 'avatar photo', 'src' => $avatar->url));
+                                    // Protocol-relative URL for avatars
+                                    $src = preg_replace('/^https?:\/\//i', '//', $avatar->url);
+                                    $this->element('img', array('width' => '48', 'height' => '48', 'alt' => $follower->nickname, 'class' => 'avatar photo', 'src' => $src));
                                 }
 
                                 $this->element('span', array('class' => 'fn'), $follower->nickname);
