@@ -27,7 +27,7 @@
  * @link      http://github.com/chimo/SocialAnalytics
  */
 
-if (!defined('STATUSNET')) {
+if (!defined('GNUSOCIAL')) {
     // This check helps protect against security problems;
     // your code file can't be executed directly from the web.
     exit(1);
@@ -191,7 +191,7 @@ class SocialAnalyticsPlugin extends Plugin
         $versions[] = array('name' => 'Social Analytics',
                             'version' => '0.2.0',
                             'author' => 'Stéphane Bérubé',
-                            'homepage' => 'http://status.net/wiki/Plugin:SocialAnalytics',
+                            'homepage' => 'https://github.com/chimo/gs-socialAnalytics',
                             'rawdescription' =>
                           // TRANS: Plugin description.
                             _m('Plugin to give insights into what\'s happening in your social network over time.'));
