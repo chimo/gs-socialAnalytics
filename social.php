@@ -137,7 +137,7 @@ class SocialAction extends Action
         return _m('Social Analytics');
     }
 
-    function printNavigation($sdate, $edate, $location) {
+    function printNavigation($sdate, $edate) {
         $url = common_local_url('social');
 
         $_sdate = clone($sdate);
@@ -146,23 +146,24 @@ class SocialAction extends Action
         $_sdate->modify('first day of last month');
 
         // Prev period
-        $this->elementStart('ul', array('class' => 'sa-nav sa-nav-' . $location));
-        $this->elementStart('li', array('class' => 'sa-prev'));
+        $this->elementStart('ul', array('class' => 'sa-nav'));
+        $this->elementStart('li', array('class' => 'sa-prev col-md-4'));
         $this->element('a', array('href' => $url . '?sdate=' . $_sdate->format('Y-m-d') . '&edate=' . $_sdate->modify('last day of this month')->format('Y-m-d')), 'Previous month');
         $this->elementEnd('li');
 
         // Custom date range link
-        $this->elementStart('li', array('class' => 'sa-cust'));
+        $this->elementStart('li', array('class' => 'sa-cust col-md-4'));
         $this->element('a', array('href' => '#'), 'Custom date range');
 
         // Custom date range datepickers
-        $this->elementStart('form', array('class' => 'sa-picker sa-picker-' . $location, 'method' => 'get', 'action' => $url));
+        $this->elementStart('form', array('class' => 'sa-picker', 'method' => 'get', 'action' => $url));
         $this->elementStart('fieldset');
-        $this->element('label', array('for' => 'sa-date-s-' . $location), 'Start date:');
-        $this->element('input', array('id' => 'sa-date-s-' . $location, 'name' => 'sdate', 'type' => 'date'));
+        $this->element('label', array('for' => 'sa-date-s'), 'Start date:');
+        $this->element('input', array('id' => 'sa-date-s', 'name' => 'sdate', 'type' => 'date'));
         $this->element('br');
-        $this->element('label', array('for' => 'sa-date-e-' . $location), 'End date:');
-        $this->element('input', array('id' => 'sa-date-e-' . $location, 'name' => 'edate', 'type' => 'date'));
+        $this->element('label', array('for' => 'sa-date-e'), 'End date:');
+        $this->element('input', array('id' => 'sa-date-e', 'name' => 'edate', 'type' => 'date'));
+        $this->element('br');
         $this->element('input', array('type' => 'submit', 'id' => 'sa-submit'));
         $this->elementEnd('fieldset');
         $this->elementEnd('form');
@@ -171,7 +172,7 @@ class SocialAction extends Action
 
         // Next period
         $_edate->modify('first day of next month');
-        $this->elementStart('li', array('class' => 'sa-next'));
+        $this->elementStart('li', array('class' => 'sa-next col-md-4'));
         $this->element('a', array('href' => $url . '?sdate=' . $_edate->format('Y-m-d') . '&edate=' . $_edate->modify('last day of this month')->format('Y-m-d')), 'Next month');
         $this->elementEnd('li');
         $this->elementEnd('ul');
@@ -179,23 +180,28 @@ class SocialAction extends Action
 
 
     function printGraph($name, $rows) {
-        if(count($rows) < 1) { // Skip empty tables
+        // Skip empty tables
+        if(count($rows) < 1) {
             return;
         }
 
-        $this->element('h3', null, ucfirst(str_replace('_', ' ', _m($name))));
-
-        $this->elementStart('details', array('class' => 'sa-wrap ' . $name . '_wrapper'));
-
-        $this->element('summary', array('class' => 'sa-summary'), 'Details');
-
         // Type of graph
-        $type = 'sa-pie';
-        if($name == 'trends') { $type = 'sa-line'; }
+        $type = ($name === 'trends') ? 'sa-line' : 'sa-pie';
+        $cols = ($type === 'sa-pie') ? 'col-md-6' : 'col-md-12';
+        $klass = $cols . ' sa-cell sa-' . $name;
+
+        // Human-readable graph name
+        $graphName = ucfirst(str_replace('_', ' ', _m($name)));
+
+        // Panel
+        $this->elementStart('div', array('class' => $klass));
+        $this->elementStart('figure', array('class' => 'sa-panel'));
+        $this->element('figcaption', array('class' => 'sa-title'), $graphName);
+        $this->elementStart('details');
+        $this->element('summary', null, 'Graph data');
 
         // Table
         $this->elementStart('table', array('class' => 'sa-table ' . $type, 'id' => 'sa-' . $name));
-        $this->element('caption', null, ucfirst(str_replace('_', ' ', _m($name))));
         $this->elementStart('thead');
         $this->elementStart('tr');
         $this->element('td');
@@ -240,7 +246,7 @@ class SocialAction extends Action
 
                 // Detailed information (appears onclick)
                 if(count($cell) !== 0) {
-                    $this->elementStart('ul');
+                    $this->elementStart('ul', array('class' => 'sa-tbl-details'));
                     switch(get_class(current($cell))) {
                         case 'Notice':
                             foreach($cell as $notice) {
@@ -291,6 +297,8 @@ class SocialAction extends Action
         $this->elementEnd('table');
 
         $this->elementEnd('details');
+        $this->elementEnd('figure');
+        $this->elementEnd('div');
     }
 
     /**
@@ -307,6 +315,8 @@ class SocialAction extends Action
      */
     function showContent()
     {
+        $this->elementStart('div', array("class" => "container-fluid"));
+
         // Month
         $this->element('h2', null, sprintf(_m('From %s to %s'), $this->sa->sdate->format('Y-m-d'), $this->sa->edate->format('Y-m-d')));
 
@@ -314,10 +324,14 @@ class SocialAction extends Action
         $this->printNavigation($this->sa->sdate, $this->sa->edate, 't');
 
         // Summary
-        $this->elementStart('div', array('class' => 'sa-summary'));
+        $this->elementStart('div', array('class' => 'sa-summary col-md-12'));
         $this->element('h3', null, 'Summary');
-        $this->element('p', 'During this time, you:');
-        $this->elementStart('ul');
+
+
+        $this->elementStart('figure', array('class' => 'sa-panel'));
+        $this->element('figcaption', array('class' => 'sa-title'), "During this time, you...");
+
+        $this->elementStart('ul', array("class" => "colcount-md-2 sa-summary-list"));
 
         $this->elementStart('li', array('class' => 'sa-posts'));
         $this->text('posted ' . $this->sa->ttl_notices . ' notice(s). (Daily avg: ' . round($this->sa->ttl_notices/count($this->sa->graphs['trends'])) . ')');
@@ -352,12 +366,16 @@ class SocialAction extends Action
         $this->elementEnd('li');
 
         $this->elementEnd('ul');
+        $this->elementEnd('figure');
         $this->elementEnd('div');
 
         $ttl = $this->sa->ttl_notices + $this->sa->ttl_bookmarks + $this->sa->ttl_following + $this->sa->ttl_followers + $this->sa->ttl_faves + $this->sa->ttl_o_faved + $this->sa->ttl_mentions + $this->sa->ttl_replies;
 
         // Only print graphs if we have some data
         if($ttl !== 0) {
+            $this->element('h3', array('class' => 'col-md-12'), 'Charts');
+            $this->element('div', array('class' => 'clearfix'));
+
             // Graphs
             foreach($this->sa->graphs as $title => $graph) {
                     $this->printGraph($title, $graph);
@@ -367,6 +385,7 @@ class SocialAction extends Action
         // If we have map data
         if(count($this->sa->map)) {
             // Wrapper
+            $this->elementStart('div', array('class' => 'col-md-12'));
             $this->elementStart('div', array('class' => 'sa-map-wrap'));
 
             // Popup
@@ -409,11 +428,12 @@ class SocialAction extends Action
                 $this->inlineScript($js);
             }
 
-            $this->elementEnd('div'); // Wrapper
+            // Wrapper
+            $this->elementEnd('div');
+            $this->elementEnd('div');
         }
 
-        // Navigation
-        $this->printNavigation($this->sa->sdate, $this->sa->edate, 'b');
+        $this->elementEnd('div');
     }
 
     /**

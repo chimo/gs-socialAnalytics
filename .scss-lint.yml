@@ -1,0 +1,20 @@
+linters:
+  VendorPrefixes:
+    enabled: false # column-count
+  QualifyingElement:
+    enabled: false # <detail> polyfill
+  IdSelector:
+    enabled: false # needed to override GS styles
+  StringQuotes:
+    enabled: true
+    style: double_quotes
+  Indentation:
+    width: 4
+  Comment:
+    enabled: false
+  LeadingZero:
+    enabled: false
+  SelectorDepth:
+    enabled: false
+  SelectorFormat: # GS class names
+    enabled: false

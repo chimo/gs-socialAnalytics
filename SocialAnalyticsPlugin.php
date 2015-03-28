@@ -84,6 +84,7 @@ class SocialAnalyticsPlugin extends Plugin
     function onEndShowScripts($action)
     {
         if($this->isSocial()) {
+            $action->script($this->path('js/jquery.details.min.js'));
             $action->script($this->path('js/ol.js'));
             $action->script($this->path('js/chartist.min.js'));
             $action->script($this->path('js/sa.js'));
@@ -94,6 +95,7 @@ class SocialAnalyticsPlugin extends Plugin
     function onEndShowStyles($action)
     {
         if($this->isSocial() && common_logged_in()) {
+            $action->cssLink($this->path('css/bootstrap.min.css'));
             $action->cssLink($this->path('css/chartist.min.css'));
             $action->cssLink($this->path('css/ol.css'));
             $action->cssLink($this->path('css/sa.css'));
