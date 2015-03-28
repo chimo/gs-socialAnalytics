@@ -1,7 +1,3 @@
-## Note
-
-My SN instance is pretty small (single-user, not many notices); I don't know how well it behaves on larger instances.
-
 ## Instructions
 
 Drop the files in your `/plugins/` folder  
