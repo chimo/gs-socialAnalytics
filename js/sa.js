@@ -411,29 +411,32 @@
 
         $tables.each( function() {
             var $table = $( this ),
-                $cells = $table.find( "tbody td" ),
+                $tr = $table.find( "tbody tr" ),
                 series = [],
+                labels = [],
                 $graph,
                 data;
 
             $graph = $( "<div class='ct-chart ct-octave'></div>" ).insertBefore( $table.closest( "details" ) );
 
-            $cells.each( function() {
-                var $cell = $( this ),
-                    num = parseInt( $cell.text(), 10 );
+            $tr.each( function() {
+                var $row = $( this ),
+                    num = parseInt( $row.find( "td" ).text(), 10 ),
+                    label = $row.find( "th" ).text();
 
                 series.push( num );
+                labels.push( label );
             } );
 
             data = {
-                "series": series
+                "series": series,
+                "labels": labels
             };
 
             new Chartist.Pie( $graph.get( 0 ), data, {
-                // We want percentages as labels, not absolute numbers
-                labelInterpolationFnc: function( value ) {
-                    return Math.round( value / data.series.reduce( sum ) * 100 ) + "%";
-                }
+                chartPadding: 30,
+                labelDirection: "explode",
+                labelOffset: 100
             } );
         } );
     };

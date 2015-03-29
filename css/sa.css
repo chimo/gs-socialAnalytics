@@ -184,7 +184,7 @@ summary:focus {
 .ct-chart {
   /* Additional colors */ }
   .ct-chart .ct-label {
-    fill: #fff;
+    fill: #000;
     font-weight: bold; }
     .ct-chart .ct-label, .ct-chart .ct-label.ct-horizontal, .ct-chart .ct-label.ct-vertical {
       font-size: 1.5rem; }
