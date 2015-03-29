@@ -505,65 +505,69 @@
         };
 
         /* Wrap <td> numbers in a link that will show <td> details when clicked on. */
-        $( ".sa-table td" ).each( function() {
-            var $this   = $( this ),
-                caption = $this.closest( "table" ).children( "caption" ).text(),
-                content = $this.children( "ul" ),
-                $link   = $( "<a href='#'></a>" ),
-                $num    = $this.children( "span" );
+        $( ".sa-table" ).each( function() {
+            var $table  = $( this ),
+                caption = $table.closest( "figure" ).children( "figcaption" ).text();
 
-            if ( $num.text() === "0" ) {
-                return;
-            }
+            $table.find( "td" ).each( function() {
+                var $cell   = $( this ),
+                    content = $cell.children( "ul" ),
+                    $link   = $( "<a href='#'></a>" ),
+                    $num    = $cell.children( "span" );
 
-            $link.on( "click", function( e ) {
-                e.preventDefault();
-
-                var $this = $( this );
-
-                /* If we already fetched the data, just show it */
-                if ( $this.hasClass( "sa-ajaxed" ) ) {
-                    $dial.html( content )
-                        .dialog( "option", "title", caption )
-                        .dialog( "open" );
-                } else {
-                    $this.addClass( "sa-ajaxed" ); /* Mark as fetched */
-
-                    /* Loading indicator */
-                    $dial.html( "<div class='sa-processing'></div>" )
-                        .dialog( "option", "title", caption )
-                        .dialog( "open" );
-
-                    $this.siblings( "ul" ).children( "li" ).each( function() {
-                        var $this = $( this );
-
-                        /* Notice */
-                        if ( $this.hasClass( "sa-notice" ) ) {
-                            $this.removeClass( "sa-notice" );
-
-                            /* Fetch notice data */
-                            $.ajax( {
-                                url: snRoot + "api/statuses/show.json?id=" + $this.attr( "class" ),
-                                dataType: "json",
-                                success: callback( $this ),
-                                error: function() {
-                                    /* Fall back to non-rich data */
-                                    $this.addClass( "sa-ajaxed" );
-                                    $dial.html( content )
-                                        .dialog( "option", "title", caption )
-                                        .dialog( "open" );
-                                }
-                            } );
-                        } else { /* Profile */
-                            $dial.html( content )
-                                .dialog( "option", "title", caption )
-                                .dialog( "open" );
-                        }
-                    } );
+                if ( $num.text() === "0" ) {
+                    return;
                 }
-            } );
 
-            $num.wrap( $link );
+                $link.on( "click", function( e ) {
+                    e.preventDefault();
+
+                    var $this = $( this );
+
+                    /* If we already fetched the data, just show it */
+                    if ( $this.hasClass( "sa-ajaxed" ) ) {
+                        $dial.html( content )
+                            .dialog( "option", "title", caption )
+                            .dialog( "open" );
+                    } else {
+                        $this.addClass( "sa-ajaxed" ); /* Mark as fetched */
+
+                        /* Loading indicator */
+                        $dial.html( "<div class='sa-processing'></div>" )
+                            .dialog( "option", "title", caption )
+                            .dialog( "open" );
+
+                        $this.siblings( "ul" ).children( "li" ).each( function() {
+                            var $this = $( this );
+
+                            /* Notice */
+                            if ( $this.hasClass( "sa-notice" ) ) {
+                                $this.removeClass( "sa-notice" );
+
+                                /* Fetch notice data */
+                                $.ajax( {
+                                    url: snRoot + "api/statuses/show.json?id=" + $this.attr( "class" ),
+                                    dataType: "json",
+                                    success: callback( $this ),
+                                    error: function() {
+                                        /* Fall back to non-rich data */
+                                        $this.addClass( "sa-ajaxed" );
+                                        $dial.html( content )
+                                            .dialog( "option", "title", caption )
+                                            .dialog( "open" );
+                                    }
+                                } );
+                            } else { /* Profile */
+                                $dial.html( content )
+                                    .dialog( "option", "title", caption )
+                                    .dialog( "open" );
+                            }
+                        } );
+                    }
+                } );
+
+                $num.wrap( $link );
+            } );
         } );
     };
 
