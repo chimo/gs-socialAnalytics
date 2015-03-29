@@ -1,6 +1,6 @@
-/**
- * GNU social overrides
- */
+//
+// GNU social overrides
+//
 h1 {
     margin-left: 30px;
     margin-right: 30px;
@@ -57,9 +57,9 @@ h6 {
     border: 0;
 }
 
-/**
- * Bootstrap overrides
- */
+//
+// Bootstrap overrides
+//
 #header-search fieldset {
     border: 0;
     margin: 0;
@@ -70,9 +70,9 @@ h6 {
     box-sizing: content-box;
 }
 
-/* medium view */
+// medium view
 @media only screen and (min-width : 992px) {
-    /* 2-col list */
+    // 2-col list
     .colcount-md-2 {
         -moz-column-count: 2;
         -webkit-column-count: 2;
@@ -80,9 +80,9 @@ h6 {
     }
 }
 
-/**
- * Details polyfill
- */
+//
+// Details polyfill
+//
 details,
 summary {
     display: block;
@@ -122,9 +122,9 @@ summary:focus {
     display: block;
 }
 
-/**
- * Social Analytics
- */
+//
+// Social Analytics
+//
 #sa-map {
     border: 1px solid #000;
     max-height: 400px;
@@ -228,9 +228,9 @@ summary:focus {
     }
 }
 
-/**
- * Chartist
- */
+//
+// Chartist
+//
 .ct-chart {
     .ct-label {
         fill: #000;
@@ -273,7 +273,7 @@ summary:focus {
         }
     }
 
-    /* Additional colors */
+    // Additional colors
     .ct-chart-pie .ct-series.ct-series-e .ct-slice:not(.ct-donut) {
         fill: #e74700;
     }

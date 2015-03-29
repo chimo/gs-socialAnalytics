@@ -10,8 +10,6 @@ linters:
     style: double_quotes
   Indentation:
     width: 4
-  Comment:
-    enabled: false
   LeadingZero:
     enabled: false
   SelectorDepth:
