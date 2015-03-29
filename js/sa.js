@@ -45,7 +45,7 @@
             followingCoords,
             followersCoords;
 
-        // Bail if we don't have any map data.
+        /* Bail if we don't have any map data. */
         if ( !SA ) {
             return;
         }
@@ -111,7 +111,7 @@
 
             map.addOverlay( popup );
 
-            // display popup on click
+            /* display popup on click */
             map.on( "click", function( evt ) {
                 var feature,
                     geometry,
@@ -151,7 +151,7 @@
                 element.style.display = "none";
             } );
 
-            // Change mouse cursor when over marker
+            /* Change mouse cursor when over marker */
             $( map.getViewport() ).on( "mousemove", function( e ) {
                 var pixel,
                     hit,
@@ -172,8 +172,8 @@
             } );
         };
 
-        // If we have coords available for new subscriptions,
-        // create map layer with markers
+        /* If we have coords available for new subscriptions,
+           create map layer with markers */
         if ( followingCoords ) {
             layers.push(
                 new ol.layer.Vector(
@@ -185,8 +185,8 @@
             );
         }
 
-        // If we have coords available for new subscribers,
-        // create map layer with markers
+        /* If we have coords available for new subscribers,
+           create map layer with markers */
         if ( followersCoords ) {
             layers.push(
                 new ol.layer.Vector(
@@ -198,7 +198,7 @@
             );
         }
 
-        // Create map
+        /* Create map */
         map  = new ol.Map( {
             target: document.getElementById( "sa-map" ),
             layers: layers,
@@ -228,14 +228,14 @@
      * "Custom date range" link
      */
     buildCustomDate = function() {
-            // Show/hide custom date form
+            /* Show/hide custom date form */
             $( ".sa-cust a" ).on( "click", function( e ) {
                 e.preventDefault();
 
                 var $link = $( this );
 
                 $link
-                    .parent() // TODO: ARIA
+                    .parent() /* TODO: ARIA */
                     .find( ".sa-picker" )
                     .fadeToggle();
             } );
@@ -282,9 +282,9 @@
             $series,
             html;
 
-        // Don't build more than one legend
-        // Necessary since the "create" event can be triggered more than once
-        // TODO: try unbinding the event while in here.
+        /* Don't build more than one legend
+           Necessary since the "create" event can be triggered more than once
+           TODO: try unbinding the event while in here. */
         if ( $svg.closest( "figure" ).find( ".sa-legend" ).length > 0 ) {
             return;
         }
@@ -327,19 +327,19 @@
             $graphContainer = $( "<div class='ct-chart'><div class='tooltip' style='display: none;'></div></div>" ).insertBefore( $table.closest( "details" ) );
             $tooltip = $graphContainer.find( ".tooltip" );
 
-            // Prepare arrays for the different series
+            /* Prepare arrays for the different series */
             for ( i = 0, len = $headers.length; i < len; i += 1 ) {
                 seriesData.push( [] );
             }
 
-            // Gather series data and labels
+            /* Gather series data and labels */
             $contentRows.each( function() {
                 var $row = $( this );
 
-                // Labels: only keep the day (ex: 2014-01-02 becomes 02)
+                /* Labels: only keep the day (ex: 2014-01-02 becomes 02) */
                 labels.push( $row.children( "th" ).text().split( "-" )[ 2 ] );
 
-                // Data
+                /* Data */
                 $row.children( "td" ).each( function( j ) {
                     var $cell = $( this );
 
@@ -347,7 +347,7 @@
                 } );
             } );
 
-            // Associate names (columns) with series data (rows)
+            /* Associate names (columns) with series data (rows) */
             for ( i = 0, len = seriesData.length; i < len; i += 1 ) {
                 series.push( {
                     name: $headers.eq( i ).text(),
@@ -355,16 +355,16 @@
                 } );
             }
 
-            // Object required by chartist
+            /* Object required by chartist */
             data = {
                 "labels": labels,
                 "series": series
             };
 
-            // Build graph
+            /* Build graph */
             chart = new Chartist.Line( $graphContainer.get( 0 ), data );
 
-            // Build the legend after the graph has been created
+            /* Build the legend after the graph has been created */
             chart.on( "created", buildLineGraphLegend );
 
             /**
@@ -372,7 +372,7 @@
              */
 
             $graphContainer
-                // Show tooltip when cursor is over point
+                /* Show tooltip when cursor is over point */
                 .on( "mouseenter", ".ct-point", function() {
                     var $point = $( this ),
                         value = $point.attr( "ct:value" ),
@@ -382,11 +382,11 @@
                         .html( value + "<br>" + seriesName )
                         .show();
                 } )
-                // Hide tooltip when cursor leaves graph
+                /* Hide tooltip when cursor leaves graph */
                 .on( "mouseleave", ".ct-point", function() {
                    $tooltip.hide();
                 } )
-                // Position tooltip in relation to the cursor
+                /* Position tooltip in relation to the cursor */
                 .on( "mousemove", function( event ) {
                     $tooltip.css( {
                         left: ( event.offsetX || event.originalEvent.layerX ) - $tooltip.width() / 2 - 10,
@@ -462,7 +462,7 @@
 
         callback = function( elm ) {
             return function( data ) {
-                var date = new Date( data.created_at ), // TODO: handle cases when this fails
+                var date = new Date( data.created_at ), /* TODO: handle cases when this fails */
                     html = "<div class='entry-title'>" +
                         "<div class='author'>" +
                          "<span class='vcard author'>" +
@@ -483,7 +483,7 @@
                          "</span>" +
                         "</span>";
 
-                // If it's a repeat or a reply, show in context link
+                /* If it's a repeat or a reply, show in context link */
                 if ( typeof data.retweeted_status !== "undefined" || data.in_reply_to_user_id !== null ) {
                     html += "<a class='response' href='" + snRoot + "conversation/" +
                         data.statusnet_conversation_id + "#notice-" + data.id + "'>in context</a>";
@@ -494,17 +494,17 @@
                 elm.html( html )
                     .addClass( "sa-ajaxed notice" );
 
-                // If we have all the notices, place them in the dialog
+                /* If we have all the notices, place them in the dialog */
                 if ( elm.siblings( "li" ).not( ".sa-ajaxed" ).length === 0 ) {
                     $dial.html( elm.closest( "ul" ) );
 
-                    // Reposition
+                    /* Reposition */
                     $dial.dialog( "option", "position", $dial.dialog( "option", "position" ) );
                 }
             };
         };
 
-        // Wrap <td> numbers in a link that will show <td> details when clicked on.
+        /* Wrap <td> numbers in a link that will show <td> details when clicked on. */
         $( ".sa-table td" ).each( function() {
             var $this   = $( this ),
                 caption = $this.closest( "table" ).children( "caption" ).text(),
@@ -521,15 +521,15 @@
 
                 var $this = $( this );
 
-                // If we already fetched the data, just show it
+                /* If we already fetched the data, just show it */
                 if ( $this.hasClass( "sa-ajaxed" ) ) {
                     $dial.html( content )
                         .dialog( "option", "title", caption )
                         .dialog( "open" );
                 } else {
-                    $this.addClass( "sa-ajaxed" ); // Mark as fetched
+                    $this.addClass( "sa-ajaxed" ); /* Mark as fetched */
 
-                    // Loading indicator
+                    /* Loading indicator */
                     $dial.html( "<div class='sa-processing'></div>" )
                         .dialog( "option", "title", caption )
                         .dialog( "open" );
@@ -537,24 +537,24 @@
                     $this.siblings( "ul" ).children( "li" ).each( function() {
                         var $this = $( this );
 
-                        // Notice
+                        /* Notice */
                         if ( $this.hasClass( "sa-notice" ) ) {
                             $this.removeClass( "sa-notice" );
 
-                            // Fetch notice data
+                            /* Fetch notice data */
                             $.ajax( {
                                 url: snRoot + "api/statuses/show.json?id=" + $this.attr( "class" ),
                                 dataType: "json",
                                 success: callback( $this ),
                                 error: function() {
-                                    // Fall back to non-rich data
+                                    /* Fall back to non-rich data */
                                     $this.addClass( "sa-ajaxed" );
                                     $dial.html( content )
                                         .dialog( "option", "title", caption )
                                         .dialog( "open" );
                                 }
                             } );
-                        } else { // Profile
+                        } else { /* Profile */
                             $dial.html( content )
                                 .dialog( "option", "title", caption )
                                 .dialog( "open" );
