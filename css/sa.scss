@@ -299,3 +299,8 @@ summary:focus {
     }
 }
 
+// Fix tooltip positioning in Webkit (Chromium 41.0.2272.101 (64-bit))
+.sa-trends .ct-chart {
+    position: relative;
+}
+

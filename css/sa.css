@@ -205,3 +205,6 @@ summary:focus {
   fill: #afa577; }
 .ct-chart .ct-chart-pie .ct-series.ct-series-j .ct-slice:not(.ct-donut) {
   fill: #aba918; }
+
+.sa-trends .ct-chart {
+  position: relative; }
