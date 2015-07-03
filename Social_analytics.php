@@ -31,8 +31,6 @@ if (!defined('STATUSNET')) {
     exit(1);
 }
 
-require_once INSTALLDIR . '/classes/Memcached_DataObject.php';
-
 /**
  * Data class for Social Analytics stats
  *
@@ -52,8 +50,16 @@ require_once INSTALLDIR . '/classes/Memcached_DataObject.php';
  *
  * @see      DB_DataObject
  */
-class Social_analytics extends Memcached_DataObject
+class Social_analytics extends Managed_DataObject
 {
+    /**
+     * Satisfy Managed_DataObject
+     */
+    public static function schemaDef()
+    {
+        return array();
+    }
+
     /**
      * TODO: Document 
      */
@@ -74,7 +80,7 @@ class Social_analytics extends Memcached_DataObject
             $sa->edate = $sa->sdate;
             $sa->sdate = $tmp;
         }
-        
+
         $sa->ttl_notices = 0;
         $sa->ttl_replies = 0;
         $sa->ttl_bookmarks = 0;
@@ -110,12 +116,12 @@ class Social_analytics extends Memcached_DataObject
             // Do not process dates from the future
             if($i_date->format('Y-m-d') == $today->format('Y-m-d')) {
                 break;
-            }            
+            }
             $i_date->modify('+1 day');
         }
 
         // Gather "Notice" information from db and place into appropriate arrays
-        $notices = Memcached_DataObject::cachedQuery('Notice', sprintf("SELECT * FROM notice 
+        $notices = self::cachedQuery('Notice', sprintf("SELECT * FROM notice 
             WHERE profile_id = %d AND created >= '%s' AND created <= '%s'",
             $user_id,
             $sa->sdate->format('Y-m-d'),
@@ -183,14 +189,14 @@ class Social_analytics extends Memcached_DataObject
         // Favored notices (both by 'you' and 'others')
         $sa->ttl_faves = 0;
         $sa->ttl_o_faved = 0;
-        $faved = Memcached_DataObject::cachedQuery('Fave', sprintf("SELECT * FROM fave 
+        $faved = self::cachedQuery('Fave', sprintf("SELECT * FROM fave 
             WHERE modified >= '%s' AND modified <= '%s'", 
             $sa->sdate->format('Y-m-d'), 
             $sa->edate->format('Y-m-d')));
-            
+
         foreach($faved->_items as $fave) {
             $date_created->modify($fave->modified); // String to Date
-                
+
             $notice = Notice::getKV('id', $fave->notice_id);
 
             // User's faves
@@ -206,7 +212,7 @@ class Social_analytics extends Memcached_DataObject
 
         // People who mentioned you
         $sa->ttl_mentions = 0;
-        $mentions = Memcached_DataObject::listGetClass('Reply', 'profile_id', array($user_id));
+        $mentions = self::listGetClass('Reply', 'profile_id', array($user_id));
         foreach($mentions[$user_id] as $mention) {
             $date_created->modify($mention->modified);
             if($date_created >= $sa->sdate && $date_created <= $sa->edate) {
@@ -224,7 +230,7 @@ class Social_analytics extends Memcached_DataObject
 
         // Hosts you are following
         $sa->ttl_following = 0;
-        $arr_following = Memcached_DataObject::listGetClass('Subscription', 'subscriber', array($user_id));
+        $arr_following = self::listGetClass('Subscription', 'subscriber', array($user_id));
         foreach($arr_following[$user_id] as $following) {
             // This is in my DB, but doesn't show up in my 'Following' total (???)
             if($following->subscriber == $following->subscribed) {
@@ -254,7 +260,7 @@ class Social_analytics extends Memcached_DataObject
 
         // Hosts who follow you
         $sa->ttl_followers = 0;
-        $followers = Memcached_DataObject::listGetClass('Subscription', 'subscribed', array($user_id));
+        $followers = self::listGetClass('Subscription', 'subscribed', array($user_id));
         foreach($followers[$user_id] as $follower) {
             // This is in my DB, but doesn't show up in my 'Following' total (???)
             if($follower->subscriber == $follower->subscribed) {
