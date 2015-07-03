@@ -167,18 +167,18 @@ class SocialAnalyticsPlugin extends Plugin
      * The Action class provides a rich set of events to hook, as well as output
      * methods.
      *
-     * @param Action $action The current action handler. Use this to
+     * @param Menu $menu The current menu handler. Use this to
      *                       do any output.
      *
      * @return boolean hook value; true means continue processing, false means stop.
      *
-     * @see Action
+     * @see Menu
      */
-    function onEndPersonalGroupNav(Action $action)
+    function onEndPersonalGroupNav(Menu $menu, Profile $target, Profile $scoped=null)
     {
         // common_local_url() gets the correct URL for the action name
         // we provide
-        $action->menuItem(common_local_url('social'),
+        $menu->menuItem(common_local_url('social'),
                           // TRANS: Menu item in sample plugin.
                           _m('Social Analytics'),
                           // TRANS: Menu item title in sample plugin.
