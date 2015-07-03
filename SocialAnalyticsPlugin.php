@@ -81,7 +81,7 @@ class SocialAnalyticsPlugin extends Plugin
         return ($social === $current);
     }
 
-    function onEndShowScripts($action)
+    function onEndShowScripts(Action $action)
     {
         if($this->isSocial()) {
             $action->script($this->path('js/jquery.details.min.js'));
@@ -92,7 +92,7 @@ class SocialAnalyticsPlugin extends Plugin
         return true;
     }
 
-    function onEndShowStyles($action)
+    function onEndShowStyles(Action $action)
     {
         if($this->isSocial() && common_logged_in()) {
             $action->cssLink($this->path('css/bootstrap.min.css'));
@@ -150,7 +150,7 @@ class SocialAnalyticsPlugin extends Plugin
      *
      * @return boolean hook value; true means continue processing, false means stop.
      */
-    function onRouterInitialized($m)
+    function onRouterInitialized(URLMapper $m)
     {
         $m->connect('social',
                     array('action' => 'social'));
@@ -174,7 +174,7 @@ class SocialAnalyticsPlugin extends Plugin
      *
      * @see Action
      */
-    function onEndPersonalGroupNav($action)
+    function onEndPersonalGroupNav(Action $action)
     {
         // common_local_url() gets the correct URL for the action name
         // we provide
