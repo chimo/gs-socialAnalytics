@@ -74,7 +74,7 @@ class Social_analytics extends Memcached_DataObject
             $sa->edate = $sa->sdate;
             $sa->sdate = $tmp;
         }
-        
+
         $sa->ttl_notices = 0;
         $sa->ttl_replies = 0;
         $sa->ttl_bookmarks = 0;
@@ -110,7 +110,7 @@ class Social_analytics extends Memcached_DataObject
             // Do not process dates from the future
             if($i_date->format('Y-m-d') == $today->format('Y-m-d')) {
                 break;
-            }            
+            }
             $i_date->modify('+1 day');
         }
 
@@ -187,10 +187,10 @@ class Social_analytics extends Memcached_DataObject
             WHERE modified >= '%s' AND modified <= '%s'", 
             $sa->sdate->format('Y-m-d'), 
             $sa->edate->format('Y-m-d')));
-            
+
         foreach($faved->_items as $fave) {
             $date_created->modify($fave->modified); // String to Date
-                
+
             $notice = Notice::getKV('id', $fave->notice_id);
 
             // User's faves

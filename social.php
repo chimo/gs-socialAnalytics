@@ -118,7 +118,7 @@ class SocialAction extends Action
      *
      * @return void
      */
-    function handle($args)
+    function handle(array $args=array())
     {
         parent::handle($args);
 
@@ -451,7 +451,7 @@ class SocialAction extends Action
      *
      * @return boolean is read only action?
      */
-    function isReadOnly($args)
+    function isReadOnly(array $args=array())
     {
         return true;
     }
