@@ -76,7 +76,7 @@ class SocialAction extends Action
      *
      * @return boolean success flag
      */
-    function prepare($args)
+    function prepare(array $args = array())
     {
         parent::prepare($args);
 
@@ -260,7 +260,7 @@ class SocialAction extends Action
                                 try {
                                     $avatar = $follower->getAvatar(48);
                                 } catch (Exception $e) {
-                                    // Ignore
+                                    $avatar = null;
                                 }
 
                                 // Building 'notice-like' HTML to display brief profile info
@@ -270,9 +270,9 @@ class SocialAction extends Action
                                 $this->elementStart('span', array('class' => 'vcard author'));
                                 $this->elementStart('a', array('class' => 'url', 'title' => $follower->nickname, 'href' => $follower->profileurl));
 
-                                if (isset($avatar)) {
+                                if (!is_null($avatar)) {
                                     // Protocol-relative URL for avatars
-                                    $src = preg_replace('/^https?:\/\//i', '//', $avatar->url);
+                                    $src = preg_replace('/^https?:\/\//i', '//', $avatar->displayUrl());
                                     $this->element('img', array('width' => '48', 'height' => '48', 'alt' => $follower->nickname, 'class' => 'avatar photo', 'src' => $src));
                                 }
 
@@ -451,7 +451,7 @@ class SocialAction extends Action
      *
      * @return boolean is read only action?
      */
-    function isReadOnly(array $args=array())
+    function isReadOnly($args)
     {
         return true;
     }
