@@ -208,3 +208,7 @@ summary:focus {
 
 .sa-trends .ct-chart {
   position: relative; }
+
+.ct-chart {margin: 50px 0;}
+
+.ct-octave > svg {overflow: visible;}
